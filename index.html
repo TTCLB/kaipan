@@ -148,7 +148,22 @@ obj1.add(new Option("高度下所有股",0));
 obj2.add(new Option("选择的股所属概念",0));
     
 }
-
+      function checkTime(i){
+	if (i<10) 
+  {i="0" + i}
+  
+  return i
+ 
+};
+function formatt(now){
+              var   year=checkTime(now.getFullYear());   
+          var   month=checkTime(now.getMonth()+1);   
+          var   date=checkTime(now.getDate());   
+          var   hour=checkTime(now.getHours());   
+          var   minute=checkTime(now.getMinutes());   
+          var   second=checkTime(now.getSeconds());   
+          return  hour+":"+minute+":"+second;   
+}
 
 
 function huoqu(){
@@ -156,6 +171,9 @@ function huoqu(){
     var obj=document.getElementById('lian');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+   
+
+    
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
@@ -167,8 +185,11 @@ function huoqu(){
                     for(var i=0;i<xw.info[0].length;i++){
                        obj1=document.getElementById('guo');
                        obj2=document.getElementById('suo');
-                       obj3=document.getElementById('gainian');                       
-                       mz=xw.info[0][i][1]+"【"+xw.info[0][i][0]+"】"+xw.info[0][i][5];
+                       obj3=document.getElementById('gainian');
+                       shijian=new Date(xw.info[0][i][4]*1000);
+                       shijian=formatt(shijian); 
+                       console.log(shijian)
+                       mz=xw.info[0][i][0]+"【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
                        console.log(mz)
                        dm=xw.info[0][i][0];
                        obj2.add(new Option(mz,dm));
