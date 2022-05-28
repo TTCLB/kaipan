@@ -249,7 +249,8 @@ function gai1(){
 
 function lsgc(){
 var daima="";
-
+    var obj1=document.getElementById('lian');
+    obj1.options[0].selected = true;    
 if(isNaN($("#daima").val())==true){
 
     bianma=$URL.encode($("#daima").val());
