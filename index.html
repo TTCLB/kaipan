@@ -168,7 +168,8 @@ function huoqu(){
                        obj1=document.getElementById('guo');
                        obj2=document.getElementById('suo');
                        obj3=document.getElementById('gainian');                       
-                       mz=xw.info[0][i][1]+"【"+xw.info[0][i][0]+"】";
+                       mz=xw.info[0][i][1]+"【"+xw.info[0][i][0]+"】"+xw.info[0][i][12];
+                       console.log(mz)
                        dm=xw.info[0][i][0];
                        obj2.add(new Option(mz,dm));
                        g=0;
