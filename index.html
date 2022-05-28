@@ -21,7 +21,7 @@
            <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
            <link href="assets/css/style.css" rel="stylesheet">
            <link href="assets/css/lib/themify-icons.css" rel="stylesheet">
-           <title>龙虎榜统计</title>
+           <title>连扳股概念</title>
     <script>
     </script>
 </head>
@@ -34,7 +34,7 @@
                 <div class="col-lg-6">
                     <div class="login-content">
                         <div class="login-logo">
-                            <span style="color:#000000">龙虎榜统计</span>
+                            <span style="color:#000000">连扳股概念</span>
                         </div>
                          <div class="card">
                              <div class="card-title" id="tou" style="margin-bottom:-5%">
@@ -44,22 +44,18 @@
                                     <div class="input-sizes">
                                         <form class="form-horizontal fc-view" >
                                                   
-                                   <div class="form-group" style="top">
-                                            <div class="row">
-                                              <div class="col-lg-2"></div>
-                                                <div class="col-lg-8">
-                                                    <input id="daima" type="text" placeholder="点这输股票名或代码，然后点席位选择" class="form-control"  name="example-input-small" lay-key="1" onblur="lsgc()" onclick="qingkong()">
-                                                    
-                                                </div>
-               
-                                            </div>
-
+                                   <div class="form-group" >
                                              
                                            <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
-                                                    <select class="form-control" id="xiwei"  >
-																<option value="全部店铺">席位选择</option>
+                                                    <select class="form-control" id="lian"  onchange="huoqu()">
+																<option value="0">连扳高度选择</option>
+																<option value="1">一板</option>
+																<option value="2">二板</option>
+																<option value="3">三板</option>
+																<option value="4">四板</option>
+																<option value="5">高度板</option>
 													</select>
                                                     
                                                 </div>
@@ -67,22 +63,46 @@
                                            <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
-                                                    <select class="form-control" id="mingxi"  style="margin-bottom:-3%">
-																<option value="">买入/卖出明细</option>
+                                                    <select class="form-control" id="guo"  style="margin-bottom:-3%" onchange="gai1()">
+																<option value="">国资/央背景</option>
 													</select>
                                                     
                                                 </div>
-                                            </div>                                              
+                                            </div> 
+                                           
                                    </div>
+                                   <div class="form-group">
+                                           <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="suo"  style="margin-bottom:-3%" onchange="gai()">
+																<option value="">高度下所有股</option>
+													</select>
+                                                    
+                                                </div>
+                                            </div>     
+                                             </div> 
+                                   <div class="form-group" >                                            
+                                           <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="gainian"  style="margin-bottom:-3%">
+																<option value="">选择的股所属概念</option>
+													</select>
+                                                    
+                                                </div>
+                                            </div>  
+                                        </div>
+                                        
+                                   <div class="form-group" >
                                             <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
-                                                    <input id="qian" type="text" placeholder="点这统计上榜金额，点后可看买入卖出明细" class="form-control"  name="example-input-small" lay-key="1" onblur="jiner()" onclick="qingkong1()">
+                                                    <input id="daima" type="text" placeholder="点这输股票名或代码获取相关概念" class="form-control"  name="example-input-small" lay-key="1" onblur="lsgc()" onclick="qingkong()">
                                                     
                                                 </div>
                
-                                            </div>
-                                   
+                                            </div>                                   
 
                                                     
 
@@ -115,111 +135,121 @@ SubInfo();
 function charu(soure, start, newStr){   
    return soure.slice(0, start) + newStr + soure.slice(start);
 }
-$(function(){
-    laydate.render({
-  elem: '#EndTime'
-  ,type: 'datetime'
-  ,value: new Date() 
-  ,zIndex: 99999999
-  ,format: 'yyyyMMdd'
-});
-
- laydate.render({
-  elem: '#StartTime'
-  ,type: 'datetime'
-  ,value: new Date() 
-  ,zIndex: 99999999
-  ,format: 'yyyyMMdd'
-});
-
-});
-
 
 function qingkong(){
-
-    document.getElementById('daima').value="";
+  $("#guo").empty();
+  $("#suo").empty();
+  $("#gainian").empty();
+var obj=document.getElementById('guo');
+var obj1=document.getElementById('suo');
+var obj2=document.getElementById('gainian');
+obj.add(new Option("国资/央背景",0));
+obj1.add(new Option("高度下所有股",0));
+obj2.add(new Option("选择的股所属概念",0));
     
 }
-function qingkong1(){
 
-    document.getElementById('qian').value="";
-    
-}
-function encodeToGb2312(str){
-    var strOut="";
-    for(var i = 0; i < str.length; i++){
-        var c = str.charAt(i); 
-        var code = str.charCodeAt(i);
-        if(c==" ") strOut +="+";
-        else if(code >= 19968 && code <= 40869){
-            index = code - 19968;
-            strOut += "%" + z.substr(index*4,2) + "%" + z.substr(index*4+2,2);
-        }
-        else{
-            strOut += "%" + str.charCodeAt(i).toString(16);
-        }
-    }
-    return strOut;
-}
 
-function jiner(){
-    var obj=document.getElementById('xiwei');
+
+function huoqu(){
+        document.getElementById('daima').value="";
+    var obj=document.getElementById('lian');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
-      $("#mingxi").empty();
-      var obj1=document.getElementById('mingxi');
-      obj1.add(new Option("买入/卖出明细",0)); 
-    mingzi=$("#daima").val();
-var regex2 = /\【(.+?)\】/gi;   
-    mingzi=mingzi.replaceAll(regex2,"$1");
-    regex2=/[0-9]+/gi;
-    mingzi=mingzi.replace(regex2,"");
-var zongjia=0;
-var yd=0;
-console.log(mingzi)
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
-                url:"https://applhb.longhuvip.com/w1/api/index.php?apiv=w29&PhoneOSNew=2&c=Business&BusinessID="+bid+"&st=150&a=PosDoNewStockLog",
+                url:"https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=4&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000",
                 dataType:'html',
                 success:function(co){
                     xw=JSON.parse(co)
+                    qingkong();      
+                    for(var i=0;i<xw.info[0].length;i++){
+                       obj1=document.getElementById('guo');
+                       obj2=document.getElementById('suo');
+                       obj3=document.getElementById('gainian');                       
+                       mz=xw.info[0][i][1]+"【"+xw.info[0][i][0]+"】";
+                       dm=xw.info[0][i][0];
+                       obj2.add(new Option(mz,dm));
+                       g=0;
+                   $.ajax({
+                type:"post",//请求服务器载入数据
+                async: false,
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+xw.info[0][i][0]+"&State=1",
+                dataType:'html',
+                success:function(co1){
+                    xw1=JSON.parse(co1)
+                        
+                    for(var j=0;j<xw1.List.length;j++){
+                       mz1=xw1.List[j].CName;
 
-                    for(var i=0;i<xw.list.length-1;i++){
-                        bs=xw.list.length-1-i;
-                        if(xw.list[bs].Name==mingzi){
-                            yd=yd+1;
-                            if(xw.list[bs].Type==2){
-                              zongjia=zongjia-Number(xw.list[bs].Sell)
-                                nr=xw.list[bs].Time+"卖:"+(Number(xw.list[bs].Sell)/100000000).toFixed(3)+"亿";
-                                obj1.add(new Option(nr,yd));                              
-                            }
-                            else
-                            {
-                              zongjia=zongjia+Number(xw.list[bs].Buy)
-                                nr=xw.list[bs].Time+"买:"+(Number(xw.list[bs].Buy)/100000000).toFixed(3)+"亿";
-                                obj1.add(new Option(nr,yd));
-                            }
-                        }
+                       if(mz1.indexOf("国")!=-1 || mz1.indexOf("央")!=-1){
+                           g=1;
+                       }
                     }
-document.getElementById('qian').value="上榜金额统计："+zongjia/100000000+"亿";                    
+                    if(g==1){
+                        obj1.add(new Option(mz,dm));
+                    }
+                }
+                   })                       
+                    }                   
                 }
                    })
-}
+}    
+function gai(){
+        document.getElementById('daima').value="";
+    var obj=document.getElementById('suo');
+    index=obj.selectedIndex;
+    bid=obj.options[index].value;
+    var obj1=document.getElementById('guo');
+    obj1.options[0].selected = true;    
+                   $.ajax({
+                type:"get",//请求服务器载入数据
+                //async: false,
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+bid+"&State=1",
+                dataType:'html',
+                success:function(co){
+                    xw=JSON.parse(co)
+                  $("#gainian").empty();
+                obj2=document.getElementById('gainian');
+                    for(var j=0;j<xw.List.length;j++){
+                       mz=xw.List[j].CName;
+                       obj2.add(new Option(mz,0));
 
+                       }
+                    }                   
 
+                   })
+}    
+function gai1(){
+        document.getElementById('daima').value="";
+    var obj=document.getElementById('guo');
+    index=obj.selectedIndex;
+    bid=obj.options[index].value;
+    var obj1=document.getElementById('suo');
+    obj1.options[0].selected = true; 
+                   $.ajax({
+                type:"get",//请求服务器载入数据
+                //async: false,
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+bid+"&State=1",
+                dataType:'html',
+                success:function(co){
+                    xw=JSON.parse(co)
+                  $("#gainian").empty();
+                obj2=document.getElementById('gainian');
+                    for(var j=0;j<xw.List.length;j++){
+                       mz=xw.List[j].CName;
+                       obj2.add(new Option(mz,0));
+
+                       }
+                    }                   
+
+                   })
+} 
 
 function lsgc(){
 var daima="";
-var mama="";
-var dyyd="";
-var youguan="";
-  $("#xiwei").empty();
-  $("#mingxi").empty();
-var obj=document.getElementById('xiwei');
-var obj1=document.getElementById('mingxi');
-obj.add(new Option("席位选择",0));
-obj1.add(new Option("买入/卖出明细",0));
+
 if(isNaN($("#daima").val())==true){
 
     bianma=$URL.encode($("#daima").val());
@@ -240,29 +270,24 @@ if(isNaN($("#daima").val())==true){
                     daima=co.result[0][1];
                     mama=co.result[0][2];
                     mama=mama.replace(/<[^>]+>/g,"");
-document.getElementById('daima').value=daima+"【"+mama+"】";
+document.getElementById('daima').value=mama+"【"+daima+"】";
+
                    $.ajax({
-                type:"post",//请求服务器载入数据
+                type:"get",//请求服务器载入数据
                 //async: false,
-                url:"https://applhb.longhuvip.com/w1/api/index.php?apiv=w29&PhoneOSNew=2&VerSion=5.4.0.3&c=Stock&a=GetNewOneStockInfo&Type=0&StockID="+daima,
-                             dataType:'html',//服务器返回json格式数据
-                             //jsonpCallback:'cb',
-                             //jsonp: 'cb',
-                             //crossDomain: true,
-                            // data:"{}",
-                             //ContentType:'application/javascript',
-                success:function(co1){
-                    xw=JSON.parse(co1)
-                    for(var i=0;i<xw.List[0].BuyList.length;i++){
-                    nr=xw.List[0].BuyList[i].Name;
-                    yd=xw.List[0].BuyList[i].ID;
-                    obj.add(new Option(nr,yd));
-                    nr=xw.List[0].SellList[i].Name;
-                    yd=xw.List[0].SellList[i].ID;
-                    obj.add(new Option(nr,yd));                    
-                    }
-                   console.log(xw)
-                },
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+daima+"&State=1",
+                dataType:'html',
+                success:function(co){
+                    xw=JSON.parse(co)
+                  $("#gainian").empty();
+                obj2=document.getElementById('gainian');
+                    for(var j=0;j<xw.List.length;j++){
+                       mz=xw.List[j].CName;
+                       obj2.add(new Option(mz,0));
+
+                       }
+                    }                   
+
                    })
             
              },
@@ -284,28 +309,24 @@ else{
                 success:function(co){
 
                   
-
-document.getElementById('daima').value=daima+"【"+co.data.list[0].codes[0].short_name+"】";
+console.log(daima)
+document.getElementById('daima').value=co.data.list[0].codes[0].short_name+"【"+daima+"】";
                    $.ajax({
-                type:"post",//请求服务器载入数据
+                type:"get",//请求服务器载入数据
                 //async: false,
-                url:"https://applhb.longhuvip.com/w1/api/index.php?apiv=w29&PhoneOSNew=2&VerSion=5.4.0.3&c=Stock&a=GetNewOneStockInfo&Type=0&StockID="+daima,
-                             dataType:'html',//服务器返回json格式数据
-                             //jsonpCallback:'cb',
-                             //jsonp: 'cb',
-                             //crossDomain: true,
-                            // data:"{}",
-                             //ContentType:'application/javascript',
-                success:function(co1){
-                    xw=JSON.parse(co1)
-                    cd=xw.List[0].BuyList;
-                    for(var i=0;i<xw.List[0].BuyList.length;i++){
-                    nr=xw.List[0].BuyList[i].Name;
-                    yd=xw.List[0].BuyList[i].ID;
-                    obj.add(new Option(nr,yd));
-                    }
-                   console.log(xw)
-                },
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+daima+"&State=1",
+                dataType:'html',
+                success:function(co){
+                    xw=JSON.parse(co)
+                  $("#gainian").empty();
+                obj2=document.getElementById('gainian');
+                    for(var j=0;j<xw.List.length;j++){
+                       mz=xw.List[j].CName;
+                       obj2.add(new Option(mz,0));
+
+                       }
+                    }                   
+
                    })
             
              },
@@ -313,10 +334,6 @@ document.getElementById('daima').value=daima+"【"+co.data.list[0].codes[0].shor
    
 } 
 }
-
-
-
-
 
 
 
