@@ -63,20 +63,33 @@
                                            <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
-                                                    <select class="form-control" id="guo"  style="margin-bottom:-3%" onchange="gai1()">
-																<option value="">国资/央背景</option>
+                                                    <select class="form-control" id="gn"  style="margin-bottom:-3%" onchange="hq()">
+																<option value="0">需【筛选概念】再下拉，默认不筛</option>
 													</select>
                                                     
                                                 </div>
                                             </div> 
                                            
                                    </div>
+                                   
+                                   <div class="form-group">
+                                           <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="guo"  style="margin-bottom:-3%" onchange="gai1()">
+																<option value="0">国资/央背景</option>
+													</select>
+                                                    
+                                                </div>
+                                            </div>     
+                                             </div> 
+                                             
                                    <div class="form-group">
                                            <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
                                                     <select class="form-control" id="suo"  style="margin-bottom:-3%" onchange="gai()">
-																<option value="">高度下所有股</option>
+																<option value="0">高度下所有股</option>
 													</select>
                                                     
                                                 </div>
@@ -87,7 +100,7 @@
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
                                                     <select class="form-control" id="gainian"  style="margin-bottom:-3%">
-																<option value="">选择的股所属概念</option>
+																<option value="0">选择的股所属概念</option>
 													</select>
                                                     
                                                 </div>
@@ -132,6 +145,34 @@ function keyListener(e) {
 SubInfo();
     }
 }
+
+  function listSortBy(arr, field, order){
+    var refer = [], result=[], order = order=='asc'?'asc':'desc', index;
+    for(i=0; i<arr.length; i++){
+        refer[i] = arr[i][field]+':'+i;
+    }
+        refer.sort(function (a,b) {
+            a=parseFloat(a);
+            b=parseFloat(b);
+            if (a < b ) {    
+                return -1;
+            }
+            if (a > b ) {
+                return 1;
+            }
+            // a must be equal to b
+            return 0;
+        });
+
+
+    if(order=='desc') refer.reverse();
+    for(i=0;i<refer.length;i++){
+        index = refer[i].split(':')[1];
+        result[i] = arr[index];
+    }
+    return result;
+}
+
 function charu(soure, start, newStr){   
    return soure.slice(0, start) + newStr + soure.slice(start);
 }
@@ -140,13 +181,15 @@ function qingkong(){
   $("#guo").empty();
   $("#suo").empty();
   $("#gainian").empty();
+  $("#gn").empty();
+var obj3=document.getElementById('gn');  
 var obj=document.getElementById('guo');
 var obj1=document.getElementById('suo');
 var obj2=document.getElementById('gainian');
 obj.add(new Option("国资/央背景",0));
 obj1.add(new Option("高度下所有股",0));
 obj2.add(new Option("选择的股所属概念",0));
-    
+obj3.add(new Option("需要【筛选概念】再下拉，默认不筛",0));    
 }
       function checkTime(i){
 	if (i<10) 
@@ -165,13 +208,81 @@ function formatt(now){
           return  hour+":"+minute+":"+second;   
 }
 
-
-function huoqu(){
-        document.getElementById('daima').value="";
+function hq(){
+    document.getElementById('daima').value="";
     var obj=document.getElementById('lian');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+    var gnobj=document.getElementById('gn');
+    index=gnobj.selectedIndex;
+    gnbid=gnobj.options[index].value;
+                   $.ajax({
+                type:"get",//请求服务器载入数据
+                //async: false,
+                url:"https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000",
+                dataType:'html',
+                success:function(co){
+                    xw=JSON.parse(co)
+              $("#guo").empty();
+              $("#suo").empty();
+              $("#gainian").empty();
+            var obj=document.getElementById('guo');
+            var obj1=document.getElementById('suo');
+            var obj2=document.getElementById('gainian');
+            obj.add(new Option("国资/央背景",0));
+            obj1.add(new Option("高度下所有股",0));
+            obj2.add(new Option("选择的股所属概念",0));
+                    for(var i=0;i<xw.info[0].length;i++){
+                       obj1=document.getElementById('guo');
+                       obj2=document.getElementById('suo');
+                       obj3=document.getElementById('gainian');
+                       shijian=new Date(xw.info[0][i][4]*1000);
+                       shijian=formatt(shijian);     
+                       mz="【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
+                       dm=xw.info[0][i][0];
+                       if(gnbid!=0){
+                       if(xw.info[0][i][5]==gnbid){obj2.add(new Option(mz,dm));}
+                       }
+                       else{obj2.add(new Option(mz,dm));}
+                       g=0;
+                   $.ajax({
+                type:"post",//请求服务器载入数据
+                async: false,
+                url:"https://apparticle.longhuvip.com/w1/api/index.php?c=StockF10Basic&a=GetConceptw23&StockID="+xw.info[0][i][0]+"&State=1",
+                dataType:'html',
+                success:function(co1){
+                    xw1=JSON.parse(co1)
+                        
+                    for(var j=0;j<xw1.List.length;j++){
+                       mz1=xw1.List[j].CName;
+
+                       if(mz1.indexOf("国")!=-1 || mz1.indexOf("央")!=-1 ){
+                           g=1;
+                       }
+                       
+                    }
+                       if(gnbid!=0){
+                       if(g==1 && gnbid==xw.info[0][i][5]){obj1.add(new Option(mz,dm));}
+                       }
+                       else{obj1.add(new Option(mz,dm));}                    
+
+                }
+                   })                       
+                    } 
+
    
+                }
+                   })    
+}
+
+
+
+function huoqu(){
+    document.getElementById('daima').value="";
+    var obj=document.getElementById('lian');
+    index=obj.selectedIndex;
+    bid=obj.options[index].value;
+    var zbk=[];
 
     
                    $.ajax({
@@ -192,6 +303,7 @@ function huoqu(){
                        dm=xw.info[0][i][0];
                        obj2.add(new Option(mz,dm));
                        g=0;
+                       zbk.push(xw.info[0][i][5])
                    $.ajax({
                 type:"post",//请求服务器载入数据
                 async: false,
@@ -212,10 +324,33 @@ function huoqu(){
                     }
                 }
                    })                       
-                    }                   
+                    } 
+    var obj4 = {}; 
+      for(var i= 0, l = zbk.length; i< l; i++){ 
+            var item = zbk[i]; 
+
+            obj4[item]= (obj4[item] +1 ) || 1; 
+    } 
+    bk=Array.from(new Set(zbk));
+    var bkk=[];
+    for(var i=0;i<bk.length;i++){
+      var ob=new Object();
+      ob.name=bk[i];
+      ob.value=parseFloat(obj4[ob.name]);
+      bkk.push(ob);
+    }
+   bk=listSortBy(bkk,'value','desc'); 
+   obj5=document.getElementById('gn');
+      for(var i=0;i<bkk.length;i++){
+          mz=bk[i]["name"]+"    【"+bk[i]["value"]+"个】"
+          obj5.add(new Option(mz,bk[i]["name"]));
+      }
+   
                 }
                    })
 }    
+
+
 function gai(){
         document.getElementById('daima').value="";
     var obj=document.getElementById('suo');
