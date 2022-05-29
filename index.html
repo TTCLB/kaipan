@@ -187,10 +187,8 @@ function huoqu(){
                        obj2=document.getElementById('suo');
                        obj3=document.getElementById('gainian');
                        shijian=new Date(xw.info[0][i][4]*1000);
-                       shijian=formatt(shijian); 
-                       console.log(shijian)
+                       shijian=formatt(shijian);     
                        mz="【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
-                       console.log(mz)
                        dm=xw.info[0][i][0];
                        obj2.add(new Option(mz,dm));
                        g=0;
@@ -276,7 +274,7 @@ var daima="";
 if(isNaN($("#daima").val())==true){
 
     bianma=$URL.encode($("#daima").val());
-    console.log(bianma)
+
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
@@ -332,7 +330,7 @@ else{
                 success:function(co){
 
                   
-console.log(daima)
+
 document.getElementById('daima').value=co.data.list[0].codes[0].short_name+"【"+daima+"】";
                    $.ajax({
                 type:"get",//请求服务器载入数据
