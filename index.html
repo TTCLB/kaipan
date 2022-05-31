@@ -269,7 +269,7 @@ function hq(){
                        obj3=document.getElementById('gainian');
                        shijian=new Date(xw.info[0][i][4]*1000);
                        shijian=formatt(shijian);     
-                       mz="【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
+                       mz=xw.info[0][i][0]+"【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
                        dm=xw.info[0][i][0];
                        if(gnbid!=0){
                        if(xw.info[0][i][5]==gnbid){obj2.add(new Option(mz,dm));}
@@ -340,7 +340,7 @@ function huoqu(){
                        obj3=document.getElementById('gainian');
                        shijian=new Date(xw.info[0][i][4]*1000);
                        shijian=formatt(shijian);     
-                       mz="【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
+                       mz=xw.info[0][i][0]+"【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
                        dm=xw.info[0][i][0];
                        obj2.add(new Option(mz,dm));
                        g=0;
