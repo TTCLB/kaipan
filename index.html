@@ -116,7 +116,15 @@
                                                 </div>
                
                                             </div>                                   
-
+                                            <div class="form-group">
+                                            <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <input id="Time" lay-key="8" type="text" class="form-control" style="margin-bottom:-3%">
+                                                </div>
+                                            </div>
+                                            
+                                            </div>
                                                     
 
                                             <div class="row"align="right">
@@ -138,6 +146,20 @@
     <script src="js/date.format.js"></script>
     <script src="js/gbk.js"></script>
    <script>
+$(function(){
+    laydate.render({
+  elem: '#Time'
+  ,type: 'datetime'
+
+  ,zIndex: 99999999
+  ,format: 'yyyy-MM-dd'
+});
+
+
+});   
+   
+   
+   
    document.onkeydown = keyListener;
 function keyListener(e) {
 // 当按下回车键，执行我们的代码
@@ -216,10 +238,19 @@ function hq(){
     var gnobj=document.getElementById('gn');
     index=gnobj.selectedIndex;
     gnbid=gnobj.options[index].value;
+    var shijian=$("#Time").val();
+    if(shijian=""){
+        var dizhi="https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000"
+    }
+    else{
+    shijian=shijian.slice(0,10);
+    var dizhi="https://apphis.longhuvip.com/w1/api/index.php?Day="+shijian+"&Order=1&PhoneOSNew=2&PidType="+bid+"&Type=4&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HisHomeDingPan&st=1000"
+    }
+    console.log(shijian)     
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
-                url:"https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000",
+                url:dizhi,
                 dataType:'html',
                 success:function(co){
                     xw=JSON.parse(co)
@@ -282,13 +313,23 @@ function huoqu(){
     var obj=document.getElementById('lian');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+    var shijian=$("#Time").val();
+    if(shijian==""){
+        var dizhi="https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000"
+    }
+    else{
+    shijian=shijian.slice(0,10);
+    var dizhi="https://apphis.longhuvip.com/w1/api/index.php?Day="+shijian+"&Order=1&PhoneOSNew=2&PidType="+bid+"&Type=4&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HisHomeDingPan&st=1000"
+    }
+    console.log(shijian)    
+    console.log(dizhi)
     var zbk=[];
 
     
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
-                url:"https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000",
+                url:dizhi,
                 dataType:'html',
                 success:function(co){
                     xw=JSON.parse(co)
