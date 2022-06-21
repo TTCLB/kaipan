@@ -93,8 +93,10 @@
 													</select>
                                                     
                                                 </div>
-                                            </div>     
+                                            </div>  
+                                            
                                              </div> 
+
                                    <div class="form-group" >                                            
                                            <div class="row">
                                               <div class="col-lg-2"></div>
@@ -106,7 +108,17 @@
                                                 </div>
                                             </div>  
                                         </div>
-                                        
+                                        <div class="form-group" >       
+                                         <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="zt"  style="margin-bottom:-3%">
+																<option value="">实时价格连板价</option>
+													</select>
+                                                    
+                                                </div>
+                                            </div>   
+                                            </div>                                        
                                    <div class="form-group" >
                                             <div class="row">
                                               <div class="col-lg-2"></div>
@@ -208,6 +220,10 @@ function qingkong(){
   $("#suo").empty();
   $("#gainian").empty();
   $("#gn").empty();
+       $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         objzt.add(new Option("实时价格连板价",0));
 var obj3=document.getElementById('gn');  
 var obj=document.getElementById('guo');
 var obj1=document.getElementById('suo');
@@ -261,6 +277,11 @@ function hq(){
               $("#guo").empty();
               $("#suo").empty();
               $("#gainian").empty();
+
+     $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         objzt.add(new Option("实时价格连板价",0));
             var obj=document.getElementById('guo');
             var obj1=document.getElementById('suo');
             var obj2=document.getElementById('gainian');
@@ -398,11 +419,22 @@ function huoqu(){
 
 function gai(){
         document.getElementById('daima').value="";
+
     var obj=document.getElementById('suo');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+    if(bid.slice(0,2)=="00"){
+   
+     zq="sz";
+
+ }
+ else{zq="sh"}
+     $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         //objzt.add(new Option("实时价格连板价",0));
     var obj1=document.getElementById('guo');
-    obj1.options[0].selected = true;    
+    obj1.options[0].selected = true; 
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
@@ -417,15 +449,52 @@ function gai(){
                        obj2.add(new Option(mz,0));
 
                        }
+                    $.ajax({
+                    type:"get",//请求服务器载入数据
+                    //async: false,
+                    url:"https://qt.gtimg.cn/q=s_"+zq+bid,
+                                 dataType:'html',//服务器返回json格式数据
+                                 crossDomain: true,
+                                 data:"{}",                         
+                    success:function(zhishu){
+                        cf = zhishu.split("~");
+
+                    var zzt=Number(cf[3]);
+                    //console.log(zzt)                    
+                    for(var aa=1;aa<11;aa++){
+                             zzt=(zzt*1.1).toFixed(2);
+                             nr=aa+"板:"+zzt;
+                             objzt.add(new Option(nr,aa));                        
+                    }
+
+
+
+ 
+                         
+                },
+               })                       
+                       
+                       
                     }                   
 
                    })
 }    
 function gai1(){
         document.getElementById('daima').value="";
+
     var obj=document.getElementById('guo');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+    if(bid.slice(0,2)=="00"){
+   
+     zq="sz";
+
+ }
+ else{zq="sh"}
+     $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         //objzt.add(new Option("实时价格连板价",0));
     var obj1=document.getElementById('suo');
     obj1.options[0].selected = true; 
                    $.ajax({
@@ -442,6 +511,32 @@ function gai1(){
                        obj2.add(new Option(mz,0));
 
                        }
+                    $.ajax({
+                    type:"get",//请求服务器载入数据
+                    //async: false,
+                    url:"https://qt.gtimg.cn/q=s_"+zq+bid,
+                                 dataType:'html',//服务器返回json格式数据
+                                 crossDomain: true,
+                                 data:"{}",                         
+                    success:function(zhishu){
+                        cf = zhishu.split("~");
+
+                    var zzt=Number(cf[3]);
+                    //console.log(zzt)                    
+                    for(var aa=1;aa<11;aa++){
+                             zzt=(zzt*1.1).toFixed(2);
+                             nr=aa+"板:"+zzt;
+                             objzt.add(new Option(nr,aa));                        
+                    }
+
+
+
+ 
+                         
+                },
+               })                       
+                       
+                       
                     }                   
 
                    })
@@ -472,7 +567,16 @@ if(isNaN($("#daima").val())==true){
                     mama=co.result[0][2];
                     mama=mama.replace(/<[^>]+>/g,"");
 document.getElementById('daima').value=mama+"【"+daima+"】";
+    if(daima.slice(0,2)=="00"){
+   
+     zq="sz";
 
+ }
+ else{zq="sh"}
+     $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         //objzt.add(new Option("实时价格连板价",0));
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
@@ -490,7 +594,30 @@ document.getElementById('daima').value=mama+"【"+daima+"】";
                     }                   
 
                    })
-            
+                    $.ajax({
+                    type:"get",//请求服务器载入数据
+                    //async: false,
+                    url:"https://qt.gtimg.cn/q=s_"+zq+daima,
+                                 dataType:'html',//服务器返回json格式数据
+                                 crossDomain: true,
+                                 data:"{}",                         
+                    success:function(zhishu){
+                        cf = zhishu.split("~");
+
+                    var zzt=Number(cf[3]);
+                    //console.log(zzt)                    
+                    for(var aa=1;aa<11;aa++){
+                             zzt=(zzt*1.1).toFixed(2);
+                             nr=aa+"板:"+zzt;
+                             objzt.add(new Option(nr,aa));                        
+                    }
+
+
+
+ 
+                         
+                },
+               })              
              },
          })
 
@@ -512,6 +639,16 @@ else{
                   
 
 document.getElementById('daima').value=co.data.list[0].codes[0].short_name+"【"+daima+"】";
+    if(daima.slice(0,2)=="00"){
+   
+     zq="sz";
+
+ }
+ else{zq="sh"}
+     $("#zt").empty();
+     var objzt=document.getElementById('zt');
+
+         //objzt.add(new Option("实时价格连板价",0));
                    $.ajax({
                 type:"get",//请求服务器载入数据
                 //async: false,
@@ -526,6 +663,30 @@ document.getElementById('daima').value=co.data.list[0].codes[0].short_name+"【"
                        obj2.add(new Option(mz,0));
 
                        }
+                    $.ajax({
+                    type:"get",//请求服务器载入数据
+                    //async: false,
+                    url:"https://qt.gtimg.cn/q=s_"+zq+daima,
+                                 dataType:'html',//服务器返回json格式数据
+                                 crossDomain: true,
+                                 data:"{}",                         
+                    success:function(zhishu){
+                        cf = zhishu.split("~");
+
+                    var zzt=Number(cf[3]);
+                    //console.log(zzt)                    
+                    for(var aa=1;aa<11;aa++){
+                             zzt=(zzt*1.1).toFixed(2);
+                             nr=aa+"板:"+zzt;
+                             objzt.add(new Option(nr,aa));                        
+                    }
+
+
+
+ 
+                         
+                },
+               })                        
                     }                   
 
                    })
