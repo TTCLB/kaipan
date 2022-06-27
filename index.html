@@ -59,7 +59,8 @@
 													</select>
                                                     
                                                 </div>
-                                            </div>  
+                                            </div> 
+                                           
                                            <div class="row">
                                               <div class="col-lg-2"></div>
                                                 <div class="col-lg-8">
@@ -71,7 +72,19 @@
                                             </div> 
                                            
                                    </div>
-                                   
+                                   <div class="form-group">
+                                           <div class="row">
+                                              <div class="col-lg-2"></div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" id="jys"  style="margin-bottom:-3%" onchange="huoqu()">
+																<option value="00">只显示【深证主板】</option>
+																<option value="60">只显示【上证主板】</option>
+																<option value="suoyou">一起显示</option>
+													</select>
+                                                    
+                                                </div>
+                                            </div>         
+                                            </div> 
                                    <div class="form-group">
                                            <div class="row">
                                               <div class="col-lg-2"></div>
@@ -338,6 +351,10 @@ function huoqu(){
     var obj=document.getElementById('lian');
     index=obj.selectedIndex;
     bid=obj.options[index].value;
+    var jysobj=document.getElementById('jys');
+    index=jysobj.selectedIndex;
+    jys=jysobj.options[index].value;
+    console.log(jys)    
     var shijian=$("#Time").val();
     if(shijian==""){
         var dizhi="https://apphq.longhuvip.com/w1/api/index.php?&Order=0&PhoneOSNew=2&PidType="+bid+"&Type=5&VerSion=5.4.0.3&a=DailyLimitPerformance&apiv=w29&c=HomeDingPan&st=1000"
@@ -358,6 +375,7 @@ function huoqu(){
                 dataType:'html',
                 success:function(co){
                     xw=JSON.parse(co)
+                    console.log(xw)
                     qingkong();      
                     for(var i=0;i<xw.info[0].length;i++){
                        obj1=document.getElementById('guo');
@@ -367,9 +385,18 @@ function huoqu(){
                        shijian=formatt(shijian);     
                        mz=xw.info[0][i][0]+"【"+xw.info[0][i][1]+"】"+xw.info[0][i][5]+" "+shijian;
                        dm=xw.info[0][i][0];
-                       obj2.add(new Option(mz,dm));
+                       
+                        if(jys=="suoyou"){
+                            obj2.add(new Option(mz,dm));
+                       }
+                       else{
+                           if(xw.info[0][i][0].substring(0,2)==jys){obj2.add(new Option(mz,dm));}
+                       }
                        g=0;
-                       zbk.push(xw.info[0][i][5])
+                      zbk.push(xw.info[0][i][5])
+
+
+                       
                    $.ajax({
                 type:"post",//请求服务器载入数据
                 async: false,
@@ -386,7 +413,13 @@ function huoqu(){
                        }
                     }
                     if(g==1){
-                        obj1.add(new Option(mz,dm));
+                      if(jys=="suoyou"){
+                            obj1.add(new Option(mz,dm));
+                       }
+                       else{
+                           if(xw.info[0][i][0].substring(0,2)==jys){obj1.add(new Option(mz,dm));}
+                       }
+                        
                     }
                 }
                    })                       
@@ -430,6 +463,7 @@ function gai(){
  }
  else{zq="sh"}
      $("#zt").empty();
+
      var objzt=document.getElementById('zt');
 
          //objzt.add(new Option("实时价格连板价",0));
